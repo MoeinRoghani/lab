@@ -80,6 +80,37 @@ def triple_quicksort_copy(L):
         else:
             middle_right.append(num)
     return triple_quicksort_copy(left) + [pivot_one] + triple_quicksort_copy(middle_left) + [pivot_two] + triple_quicksort_copy(middle_right) + [pivot_three] + triple_quicksort_copy(right)
+
+
+def quadruple_quicksort(L):
+    copy = quadruple_quicksort_copy(L)
+    for i in range(len(L)):
+        L[i] = copy[i]
+
+
+def quadruple_quicksort_copy(L):
+    if len(L) < 2:
+        return L
+    
+    pivot_one = L[0]
+    pivot_two = L[1]
+    pivot_three = L[-1]
+    pivot_four = L[-2]
+    left, right, middle_left, middle_right, middle = [], [], [], [], []
+
+    for num in L[4:]:
+        if num < pivot_one:
+            left.append(num)
+        elif num > pivot_four:
+            right.append(num)
+        elif num < pivot_two:
+            middle_left.append(num)
+        elif num > pivot_three:
+            middle_right.append(num)
+        else:
+            middle.append(num)
+    
+    return quadruple_quicksort_copy(left) + [pivot_one] + quadruple_quicksort_copy(middle_left) + [pivot_two] + quadruple_quicksort_copy(middle) + [pivot_three] + quadruple_quicksort_copy(middle_right) + [pivot_four] + quadruple_quicksort_copy(right)
         
 
 def exercise6():
