@@ -38,34 +38,46 @@ def dual_quicksort(L):
 def dual_quicksort_copy(L):
     if len(L) < 2:
         return L
-    pivit_one = L[0]
-    pivit_two = L[1]
+    pivot_one = L[0]
+    pivot_two = L[1]
     left, right, middle = [], [], []
     for num in L[2:]:
-        if num < pivit_one:
+        if num < pivot_one:
             left.append(num)
-        elif num > pivit_two:
+        elif num > pivot_two:
             right.append(num)
         else:
             middle.append(num)
-    return dual_quicksort_copy(left) + [pivit_one] + dual_quicksort_copy(middle) + [pivit_two] + dual_quicksort_copy(right)
+    return dual_quicksort_copy(left) + [pivot_one] + dual_quicksort_copy(middle) + [pivot_two] + dual_quicksort_copy(right)
 
 
-def experiment6(n,m):
-    '''
-    This function will run the dual_quicksort function m times on a list of size n.
-    '''
-    times = []
-    L = create_random_list(n, n)
-    for i in range(n):
-        time = 0
-        for _ in range(m):
-            start = timeit.default_timer()
-            dual_quicksort(L)
-            end = timeit.default_timer()
-            time += end - start
-        times.append(time/m)
-    return times
+def triple_quicksort(L):
+    copy = triple_quicksort_copy(L)
+    for i in range(len(L)):
+        L[i] = copy[i]
+
+
+def triple_quicksort_copy(L):
+    if len(L) < 2:
+        return L
+    
+    pivot_one = L[0]
+    pivot_two = L[1]
+    pivot_three = L[-1]
+    left, right, middle_left, middle_right = [], [], [], []
+    for num in L[3:]:
+        if num < pivot_one:
+            left.append(num)
+        elif num > pivot_three:
+            right.append(num)
+        elif num < pivot_two:
+            middle_left.append(num)
+        else:
+            middle_right.append(num)
+    return triple_quicksort_copy(left) + [pivot_one] + triple_quicksort_copy(middle_left) + [pivot_two] + triple_quicksort_copy(middle_right) + [pivot_three] + triple_quicksort_copy(right)
+        
+
+
 
 # *************************************
 
@@ -190,11 +202,11 @@ import numpy as np
 from datetime import datetime
 
 
-sortingAlgorithms = [quicksort, dual_quicksort]
-algString = ['Quick Sort', 'Dual Quick Sort']
+sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort]
+algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort']
 
 for s in sortingAlgorithms:
-    arrayLength = list(range(10, 10000, 100)) #where we have total of 10000/100 = 100 data points on our x-axis
+    arrayLength = list(range(1, 100, 1)) #where we have total of 10000/100 = 100 data points on our x-axis
     time_history = [] #reseting out time_history for each sortng algorithm
 
     for i in arrayLength:
