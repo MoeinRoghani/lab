@@ -43,8 +43,8 @@ def dual_quicksort(L):
 def dual_quicksort_copy(L):
     if len(L) < 2:
         return L
-    pivot_one = L[0]
-    pivot_two = L[1]
+    pivot_one = min(L[0], L[1])
+    pivot_two = max(L[0], L[1])
     left, right, middle = [], [], []
     for num in L[2:]:
         if num < pivot_one:
@@ -65,10 +65,16 @@ def triple_quicksort(L):
 def triple_quicksort_copy(L):
     if len(L) < 2:
         return L
-    
-    pivot_one = L[0]
-    pivot_two = L[1]
-    pivot_three = L[-1]
+
+    pivot_one = min(L[0], L[1])
+    pivot_three = max(L[0], L[1])
+    pivot_two = L[-1]
+
+    if pivot_two < pivot_one:
+        pivot_one, pivot_two = pivot_two, pivot_one
+    elif pivot_two > pivot_three:
+        pivot_three, pivot_two = pivot_three, pivot_one
+
     left, right, middle_left, middle_right = [], [], [], []
     for num in L[3:]:
         if num < pivot_one:
@@ -91,11 +97,21 @@ def quadruple_quicksort(L):
 def quadruple_quicksort_copy(L):
     if len(L) < 2:
         return L
-    
-    pivot_one = L[0]
-    pivot_two = L[1]
-    pivot_three = L[-1]
-    pivot_four = L[-2]
+
+    pivot_one = min(L[0], L[1])
+    pivot_two = L[-1]
+    pivot_three = L[-2]
+    pivot_four = max(L[0], L[1])
+
+    if pivot_two > pivot_three:
+        pivot_two, pivot_three = pivot_three, pivot_two
+
+    if pivot_two < pivot_one:
+        pivot_one, pivot_two = pivot_two, pivot_one
+
+    if pivot_three > pivot_four:
+        pivot_three, pivot_four = pivot_four, pivot_three
+
     left, right, middle_left, middle_right, middle = [], [], [], [], []
 
     for num in L[4:]:
@@ -109,16 +125,18 @@ def quadruple_quicksort_copy(L):
             middle_right.append(num)
         else:
             middle.append(num)
-    
+
     return quadruple_quicksort_copy(left) + [pivot_one] + quadruple_quicksort_copy(middle_left) + [pivot_two] + quadruple_quicksort_copy(middle) + [pivot_three] + quadruple_quicksort_copy(middle_right) + [pivot_four] + quadruple_quicksort_copy(right)
-        
+
 
 def exercise6():
-    sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort]
-    algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort']
+    sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort, quadruple_quicksort]
+    algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort', "Quadruple Quick Sort"]
+
+    getting_sorted = True
 
     for s in sortingAlgorithms:
-        arrayLength = list(range(1, 100, 1))  # where we have total of 10000/100 = 100 data points on our x-axis
+        arrayLength = list(range(10, 10000, 100))  # where we have total of 10000/100 = 100 data points on our x-axis
         time_history = []  # reseting out time_history for each sortng algorithm
 
         for i in arrayLength:
