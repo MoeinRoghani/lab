@@ -10,6 +10,11 @@ In contains traditional implementations for:
 Author: Vincent Maccio
 """
 
+import matplotlib.pyplot as plt
+import numpy as np
+from datetime import datetime
+
+
 # ************ Quick Sort ************
 def quicksort(L):
     copy = quicksort_copy(L)
@@ -77,7 +82,39 @@ def triple_quicksort_copy(L):
     return triple_quicksort_copy(left) + [pivot_one] + triple_quicksort_copy(middle_left) + [pivot_two] + triple_quicksort_copy(middle_right) + [pivot_three] + triple_quicksort_copy(right)
         
 
+def exercise6():
+    sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort]
+    algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort']
 
+    for s in sortingAlgorithms:
+        arrayLength = list(range(1, 100, 1))  # where we have total of 10000/100 = 100 data points on our x-axis
+        time_history = []  # reseting out time_history for each sortng algorithm
+
+        for i in arrayLength:
+            # Numbers in our list can be in range of 0 to max(arrayLength)
+            mini = 0
+            maxi = max(arrayLength)
+            # samples to try and take an average
+            numberSamples = 20
+            # Samples is a vector of size (number of samples); where each row is a array of size 'i' (our current arrayLength)
+            samples = np.random.randint(mini, maxi, (numberSamples, i))
+
+            # Doing an avarage on 20 samples and appending the average time took to our time_history
+            now = datetime.now()
+            out = [s(sample) for sample in samples]
+            later = datetime.now()
+            time_history.append(((later - now).total_seconds()) / numberSamples)
+
+        # Plotting the data considering x-axis is our n (number of iputs) and y the time for each n to be sorted
+        x = arrayLength
+        y = time_history
+        plt.scatter(x, y)
+        plt.plot(x, y)
+        plt.title('Graph of %s' % algString[sortingAlgorithms.index(s)])
+        plt.xlabel('Length of our array', color='#1C2833')
+        plt.ylabel('Time spent to sort (Seconds)', color='#1C2833')
+        plt.grid()
+        plt.show()
 
 # *************************************
 
@@ -197,40 +234,5 @@ class Heap:
 
 # *************************************
 
-import matplotlib.pyplot as plt
-import numpy as np
-from datetime import datetime
+exercise6()
 
-
-sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort]
-algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort']
-
-for s in sortingAlgorithms:
-    arrayLength = list(range(1, 100, 1)) #where we have total of 10000/100 = 100 data points on our x-axis
-    time_history = [] #reseting out time_history for each sortng algorithm
-
-    for i in arrayLength:
-        #Numbers in our list can be in range of 0 to max(arrayLength)
-        mini = 0
-        maxi = max(arrayLength)
-        #samples to try and take an average
-        numberSamples = 20
-        #Samples is a vector of size (number of samples); where each row is a array of size 'i' (our current arrayLength)
-        samples = np.random.randint(mini,maxi, (numberSamples, i))
-
-        #Doing an avarage on 20 samples and appending the average time took to our time_history
-        now = datetime.now()
-        out = [s(sample) for sample in samples]
-        later = datetime.now()
-        time_history.append(((later - now).total_seconds())/numberSamples)
-
-    # Plotting the data considering x-axis is our n (number of iputs) and y the time for each n to be sorted
-    x = arrayLength
-    y = time_history
-    plt.scatter(x, y)
-    plt.plot(x, y)
-    plt.title('Graph of %s' %algString[sortingAlgorithms.index(s)])
-    plt.xlabel('Length of our array', color='#1C2833')
-    plt.ylabel('Time spent to sort (Seconds)', color='#1C2833')
-    plt.grid()
-    plt.show()
