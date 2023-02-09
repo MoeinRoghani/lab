@@ -332,10 +332,3 @@ class Heap:
 
 # *************************************
 
-# exercise6()
-exercise6TimePercentage()
-print("Done")
-timePercentageDualtoTriple()
-print("Done")
-timePercentageDualtoQuadruple()
-
