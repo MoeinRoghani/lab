@@ -193,12 +193,26 @@ def exercise6TimePercentage(algorithm, algorithm_to_compare):
     y = time_increases
     plt.scatter(x, y)
     plt.plot(x, y)
-    plt.title(f'Graph of Time Advantage of {algorithm_to_compare.__name__} over {algorithm.__name__}')
+    plt.title(f'Graph of Time Advantage of {getQuickSortName(algorithm_to_compare)} over {getQuickSortName(algorithm)}')
     plt.xlabel('Length of our array', color='#1C2833')
     plt.ylabel('Time Advantage (Percentage)', color='#1C2833')
     plt.grid()
     plt.show()
 
+
+def getQuickSortName(quick_sort):
+    if quick_sort == quicksort:
+        return 'Quick Sort'
+    elif quick_sort == dual_quicksort:
+        return 'Dual Quick Sort'
+    elif quick_sort == triple_quicksort:
+        return 'Triple Quick Sort'
+    elif quick_sort == quadruple_quicksort:
+        return "Quadruple Quick Sort"
+    elif not quick_sort.__name__.contains('quicksort'):
+        raise Exception('Not a quicksort algorithm')
+    else:
+        return "Unknown Quick Sort"
 
 # *************************************
 
