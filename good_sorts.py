@@ -133,8 +133,6 @@ def exercise6():
     sortingAlgorithms = [quicksort, dual_quicksort, triple_quicksort, quadruple_quicksort]
     algString = ['Quick Sort', 'Dual Quick Sort', 'Triple Quick Sort', "Quadruple Quick Sort"]
 
-    getting_sorted = True
-
     for s in sortingAlgorithms:
         arrayLength = list(range(10, 10000, 100))  # where we have total of 10000/100 = 100 data points on our x-axis
         time_history = []  # reseting out time_history for each sortng algorithm
@@ -164,6 +162,111 @@ def exercise6():
         plt.ylabel('Time spent to sort (Seconds)', color='#1C2833')
         plt.grid()
         plt.show()
+
+
+def exercise6TimePercentage():
+    array_length = list(range(10, 10000, 10))
+    time_increases = []
+
+    for i in array_length:
+        mini = 0
+        maxi = max(array_length)
+
+        number_samples = 1
+        samples = np.random.randint(mini, maxi, (number_samples, i))
+        samples_two = samples.copy()
+
+        now = datetime.now()
+        out = [quicksort(sample) for sample in samples]
+        later = datetime.now()
+        quicksort_time = (later - now).total_seconds() / number_samples
+
+        now = datetime.now()
+        out = [dual_quicksort(sample) for sample in samples_two]
+        later = datetime.now()
+        dual_quicksort_time = (later - now).total_seconds() / number_samples
+
+        percentage_increase = ((dual_quicksort_time - quicksort_time) / quicksort_time) * 100
+        time_increases.append(percentage_increase)
+
+    x = array_length
+    y = time_increases
+    plt.scatter(x, y)
+    plt.plot(x, y)
+    plt.title('Graph of Time Advantage of Dual Quick Sort over Quick Sort')
+    plt.xlabel('Length of our array', color='#1C2833')
+    plt.ylabel('Time Advantage (Percentage)', color='#1C2833')
+    plt.grid()
+    plt.show()
+
+def timePercentageDualtoTriple():
+    array_length = list(range(10, 10000, 10))
+    time_increases = []
+
+    for i in array_length:
+        mini = 0
+        maxi = max(array_length)
+
+        number_samples = 1
+        samples = np.random.randint(mini, maxi, (number_samples, i))
+        samples_two = samples.copy()
+
+        now = datetime.now()
+        out = [dual_quicksort(sample) for sample in samples]
+        later = datetime.now()
+        dual_quicksort_time = (later - now).total_seconds() / number_samples
+
+        now = datetime.now()
+        out = [triple_quicksort(sample) for sample in samples_two]
+        later = datetime.now()
+        triple_quicksort_time = (later - now).total_seconds() / number_samples
+
+        time_increases.append((triple_quicksort_time - dual_quicksort_time) / dual_quicksort_time * 1)
+
+    x = array_length
+    y = time_increases
+    plt.scatter(x, y)
+    plt.plot(x, y)
+    plt.title('Graph of Time Advantage of Triple Quick Sort over Dual Quick Sort')
+    plt.xlabel('Length of our array', color='#1C2833')
+    plt.ylabel('Time Advantage (Percentage)', color='#1C2833')
+    plt.grid()
+    plt.show()
+
+
+def timePercentageDualtoQuadruple():
+    array_length = list(range(10, 10000, 10))
+    time_increases = []
+
+    for i in array_length:
+        mini = 0
+        maxi = max(array_length)
+
+        number_samples = 1
+        samples = np.random.randint(mini, maxi, (number_samples, i))
+        samples_two = samples.copy()
+
+        now = datetime.now()
+        out = [dual_quicksort(sample) for sample in samples]
+        later = datetime.now()
+        dual_quicksort_time = (later - now).total_seconds() / number_samples
+
+        now = datetime.now()
+        out = [quadruple_quicksort(sample) for sample in samples_two]
+        later = datetime.now()
+        quadruple_quicksort_time = (later - now).total_seconds() / number_samples
+
+        time_increases.append((quadruple_quicksort_time - dual_quicksort_time) / dual_quicksort_time * 1)
+
+    x = array_length
+    y = time_increases
+    plt.scatter(x, y)
+    plt.plot(x, y)
+    plt.title('Graph of Time Advantage of Quadruple Quick Sort over Dual Quick Sort')
+    plt.xlabel('Length of our array', color='#1C2833')
+    plt.ylabel('Time Advantage (Percentage)', color='#1C2833')
+    plt.grid()
+    plt.show()
 
 # *************************************
 
@@ -283,5 +386,10 @@ class Heap:
 
 # *************************************
 
-exercise6()
+# exercise6()
+exercise6TimePercentage()
+print("Done")
+timePercentageDualtoTriple()
+print("Done")
+timePercentageDualtoQuadruple()
 
