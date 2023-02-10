@@ -253,6 +253,113 @@ def merge(left, right):
                 j += 1
     return L
 
+
+def bottom_up_mergesort(L):
+    n = len(L)
+    window = 1
+    while window <= n:
+        for i in range(0, n, window*2):
+            start = i
+            mid = i + window
+            end = min(i + window*2, n)
+            in_place_merge(L, start, mid, end)
+
+        window *= 2
+
+
+def in_place_merge(L, start, mid, end):
+    left = L[start:mid]
+    right = L[mid:end]
+
+    i = j = 0
+    k = start
+
+    while i < len(left) or j < len(right):
+        if i >= len(left):
+            L[k] = right[j]
+            j += 1
+        elif j >= len(right):
+            L[k] = left[i]
+            i += 1
+        else:
+            if left[i] <= right[j]:
+                L[k] = left[i]
+                i += 1
+            else:
+                L[k] = right[j]
+                j += 1
+        k += 1
+
+
+def mergesorts_analysis():
+    mergesorts = [mergesort, bottom_up_mergesort]
+    mergesort_names = ['Merge Sort', 'Bottom Up Merge Sort']
+
+    for s in mergesorts:
+        arraylength = list(range(10, 10000, 10))
+        time_history = []
+
+        for i in arraylength:
+            mini = 0
+            maxi = max(arraylength)
+
+            numberSamples = 1
+            samples = np.random.randint(mini, maxi, (numberSamples, i))
+
+            now = datetime.now()
+            out = [s(sample) for sample in samples]
+            later = datetime.now()
+            time = ((later - now).total_seconds()) / numberSamples
+            time_history.append(time)
+
+        x = arraylength
+        y = time_history
+        plt.scatter(x, y)
+        plt.plot(x, y)
+        plt.title(f'Graph of {mergesort_names[mergesorts.index(s)]} Time')
+        plt.xlabel('Length of our array', color='#1C2833')
+        plt.ylabel('Time to Sort (Seconds)', color='#1C2833')
+        plt.grid()
+        plt.show()
+
+
+def bottom_up_mergesort_time_improvement_percentage():
+    print('Bottom Up Merge Sort Time Improvement Percentage')
+    array_length = list(range(10, 10000, 10))
+    time_improvements = []
+
+    for i in array_length:
+        mini = 0
+        maxi = max(array_length)
+
+        random_array = np.random.randint(mini, maxi, i)
+        random_array_two = random_array.copy()
+
+        now = datetime.now()
+        mergesort(random_array)
+        later = datetime.now()
+        mergesort_time = ((later - now).total_seconds())
+
+        now = datetime.now()
+        bottom_up_mergesort(random_array_two)
+        later = datetime.now()
+        bottom_up_mergesort_time = ((later - now).total_seconds())
+
+        time_improvements.append((bottom_up_mergesort_time - mergesort_time) / mergesort_time * 100)
+
+    # Plotting the data considering x-axis is our n (number of iputs) and y the time for each n to be sorted
+    x = array_length
+    y = time_improvements
+    plt.scatter(x, y)
+    plt.plot(x, y)
+    plt.title('Bottom up Merge Sort Improvement From Merge Sort')
+    plt.xlabel('Length of our array', color='#1C2833')
+    plt.ylabel('Time Increase (Percentage)', color='#1C2833')
+    plt.grid()
+    plt.show()
+
+
+
 # *************************************
 
 # ************* Heap Sort *************
@@ -331,4 +438,3 @@ class Heap:
         return s
 
 # *************************************
-
