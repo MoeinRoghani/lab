@@ -227,7 +227,10 @@ def mergesort(L):
 
     mergesort(left)
     mergesort(right)
+    print("\tLeft: ", left)
+    print("\tRight: ", right)
     temp = merge(left, right)
+    print("\tTemp: ", temp)
 
     for i in range(len(temp)):
         L[i] = temp[i]
@@ -252,6 +255,44 @@ def merge(left, right):
                 L.append(right[j])
                 j += 1
     return L
+
+
+def bottom_up_mergesort(L):
+    n = len(L)
+    window = 1
+    while window <= n:
+        for i in range(0, n, window*2):
+            start = i
+            mid = i + window
+            end = min(i + window*2, n)
+            in_place_merge(L, start, mid, end)
+
+        window *= 2
+
+
+def in_place_merge(L, start, mid, end):
+    left = L[start:mid]
+    right = L[mid:end]
+
+    i = j = 0
+    k = start
+
+    while i < len(left) or j < len(right):
+        if i >= len(left):
+            L[k] = right[j]
+            j += 1
+        elif j >= len(right):
+            L[k] = left[i]
+            i += 1
+        else:
+            if left[i] <= right[j]:
+                L[k] = left[i]
+                i += 1
+            else:
+                L[k] = right[j]
+                j += 1
+        k += 1
+
 
 # *************************************
 
@@ -331,4 +372,5 @@ class Heap:
         return s
 
 # *************************************
+
 
