@@ -1,20 +1,95 @@
 #-------------------------------------------------------------Experiment 1-------------------------------------------------------------
+import random
+import timeit
+import matplotlib.pyplot as plt
 
+for i in range(s):
+    total1 = 0
+    for _ in range(n):
+        L = create_random_list(i, m)
 
+        start = timeit.default_timer()
+        insertion_sort(L)
+        end = timeit.default_timer()
+        total1 += (end-start)
 
+    result.append(total1/n)
 
+plt.plot(result)
+plt.xlabel("List Size")
+plt.ylabel("Average Performance Time (seconds)")
+plt.show()
 
 #-------------------------------------------------------------Experiment 2-------------------------------------------------------------
+for i in range(s):
+    total1 = 0
+    total2 = 0
+    for _ in range(n):
+        L = create_random_list(i,m)
+        L2 = L.copy()
 
+        start = timeit.default_timer()
+        bubble_sort(L)
+        end = timeit.default_timer()
+        total1 += end - start
 
+        start = timeit.default_timer()
+        bubble_sort2(L2)
+        end = timeit.default_timer()
+        total2 += end - start
 
+    result.append((1 - (total2/n)/(total1/n)) * 100)
 
+plt.plot(result)
+plt.xlabel("List Size")
+plt.ylabel("Average Percentage Improvement")
+plt.show()
 
 #-------------------------------------------------------------Experiment 3-------------------------------------------------------------
 
+n = 20 #runs
+s = 10 #Swaps
+m = 5000 #max list number
+
+result1 = []
+result2 = []
+result3 = []
+for i in range(s):
+    total1 = 0
+    total2 = 0
+    total3 = 0
+    for _ in range(n): #Total runs
+        L = create_near_sorted_list(5000, m, s)
+        L2 = L.copy()
+        L3 = L.copy()
+
+        start = timeit.default_timer()
+        bubble_sort(L)
+        end = timeit.default_timer()
+        total1 += (end-start)
+
+        start = timeit.default_timer()
+        insertion_sort(L2)
+        end = timeit.default_timer()
+        total2 += (end - start)
+
+        start = timeit.default_timer()
+        selection_sort(L3)
+        end = timeit.default_timer()
+        total3 += (end - start)
+
+    result1.append(total1/n)
+    result2.append(total2/n)
+    result3.append(total3/n)
 
 
-
+x = range(s)
+plt.plot(x,result1, label = "BubbleSort")
+plt.plot(x,result2, label = "InsertionSort")
+plt.plot(x,result3, label = "SelectionSort")
+plt.xlabel("Number of Swaps")
+plt.ylabel("Average Time")
+plt.show()
 
 #-------------------------------------------------------------Experiment 4-------------------------------------------------------------
     
