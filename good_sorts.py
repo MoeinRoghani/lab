@@ -294,6 +294,35 @@ def in_place_merge(L, start, mid, end):
         k += 1
 
 
+def bottom_up_mergesort_analysis():
+    array_length = list(range(10, 10000, 10))
+    time_history = []
+
+    for i in array_length:
+        mini = 0
+        maxi = max(array_length)
+
+        numberSamples = 20
+        samples = np.random.randint(mini, maxi, (numberSamples, i))
+
+        now = datetime.now()
+        out = [bottom_up_mergesort(sample) for sample in samples]
+        later = datetime.now()
+        time_history.append(((later - now).total_seconds()) / numberSamples)
+
+        print("working on: ", i)
+
+    # Plotting the data considering x-axis is our n (number of iputs) and y the time for each n to be sorted
+    x = array_length
+    y = time_history
+    plt.scatter(x, y)
+    plt.plot(x, y)
+    plt.title('Graph of Bottom Up Merge Sort')
+    plt.xlabel('Length of our array', color='#1C2833')
+    plt.ylabel('Time spent to sort (Seconds)', color='#1C2833')
+    plt.grid()
+    plt.show()
+
 # *************************************
 
 # ************* Heap Sort *************
@@ -373,4 +402,4 @@ class Heap:
 
 # *************************************
 
-
+bottom_up_mergesort_analysis()
