@@ -99,8 +99,8 @@ from itertools import combinations
 def create_random_graph(i, j):
 
     # number of edges should always be smaller or equal to number of nodes
-    if j > i:
-        raise Exception('The number of edges should always be smaller or equal to the number of nodes')
+    if j > (i*(i-1)/2):
+        raise Exception('The number of edges should always be smaller or equal to the a full graph with that number of nodes')
 
     # making an empty dictionary for our graph
     out = {node: [] for node in range(i)}
@@ -113,7 +113,8 @@ def create_random_graph(i, j):
 
     # make our graph by adding the values
     for edge in edges:
-        out[edge[0]].append(edge[1])
-        out[edge[1]].append(edge[0])
+        if edge[1] not in out[edge[0]]:
+            out[edge[0]].append(edge[1])
+            out[edge[1]].append(edge[0])
     
     return out
