@@ -118,3 +118,8 @@ def create_random_graph(i, j):
             out[edge[1]].append(edge[0])
     
     return out
+
+def remove_edge(G, node1, node2):
+    if G.connected(node1, node2):
+        G.adj[node1].remove(node2)
+        G.adj[node2].remove(node1)
