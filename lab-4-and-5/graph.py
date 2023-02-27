@@ -119,7 +119,15 @@ def create_random_graph(i, j):
     
     return out
 
-def remove_edge(G, node1, node2):
-    if G.connected(node1, node2):
-        G.adj[node1].remove(node2)
-        G.adj[node2].remove(node1)
+def remove_all_incedent_edges(G, node):
+    for edge in G.adj[node]:
+        G.adj[edge].remove(node)
+    G.adj[node] = []
+
+def approx2(G):
+    G_copy = G.copy()
+    C = set()
+    while not is_vertex_cover(G_copy, C):
+        edge_list = list(G_copy.adj.keys())
+        edge = random.choice([x for x in edge_list if x not in C])
+        C.add(edge)
