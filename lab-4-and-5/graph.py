@@ -123,3 +123,11 @@ def remove_edge(G, node1, node2):
     if G.connected(node1, node2):
         G.adj[node1].remove(node2)
         G.adj[node2].remove(node1)
+
+def approx2(G):
+    G_copy = G.copy()
+    C = set()
+    while not is_vertex_cover(G_copy, C):
+        edge_list = list(G_copy.adj.keys())
+        edge = random.choice([x for x in edge_list if x not in C])
+        C.add(edge)
