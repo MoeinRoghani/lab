@@ -89,3 +89,36 @@ def MVC(G):
             if len(subset) < len(min_cover):
                 min_cover = subset
     return min_cover
+
+
+
+
+
+
+
+#-------------------------------------------------------------Experiment 1-------------------------------------------------------------
+import random
+from itertools import combinations
+
+# A functtion to randomly generate a graph with i node and j edges
+def create_random_graph(i, j):
+
+    # number of edges should always be smaller or equal to number of nodes
+    if j > i:
+        raise Exception('The number of edges should always be smaller or equal to the number of nodes')
+
+    # making an empty dictionary for our graph
+    out = {node: [] for node in range(i)}
+
+    # Create a list of all possible edges between nodes
+    edge_samples = list(combinations(range(i), 2))
+
+    # randomly choosing j elements from the combinations
+    edges = random.sample(edge_samples, j)
+
+    # make our graph by adding the values
+    for edge in edges:
+        out[edge[0]].append(edge[1])
+        out[edge[1]].append(edge[0])
+    
+    return out
