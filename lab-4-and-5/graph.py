@@ -157,3 +157,14 @@ def approx2(G):
         C.add(edge)
     return C
         
+        
+def approx3(G):
+    G_copy = G.copy()
+    C = set()
+    while not is_vertex_cover(G_copy, C):
+        node1 = random.choice(list(G_copy.adj.keys()))
+        node2 = random.choice(G_copy.adj[node1])
+        (u, v) = (node1, node2)
+        remove_all_incident_edges(G_copy, u)
+        remove_all_incident_edges(G_copy, v)
+    return C
