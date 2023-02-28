@@ -119,10 +119,12 @@ def create_random_graph(i, j):
     
     return out
 
-def remove_all_incedent_edges(G, node):
+
+def remove_all_incident_edges(G, node):
     for edge in G.adj[node]:
         G.adj[edge].remove(node)
     G.adj[node] = []
+
 
 def approx2(G):
     G_copy = G.copy()
