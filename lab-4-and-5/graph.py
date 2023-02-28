@@ -232,6 +232,26 @@ def has_cycle(g):
                         stack.append((adjacent, current))
     return False
 
+def is_connected(G, node1, node2):
+    S = [[node1]]
+
+    marked = {}
+    for node in G.adj:
+        marked[node] = False
+
+    while len(S) != 0:
+        temp_path = S.pop()
+        current_node = temp_path[len(temp_path)-1]
+        if not marked[current_node]:
+            marked[current_node] = True
+
+            for node in G.adj[current_node]:
+                new_path = temp_path + [node]
+                if node == node2:
+                    return True
+                S.append(new_path)
+    
+    return False
 
 #---------------------------------------------------------------Experiment 1---------------------------------------------------------------
 numberOfNodes = list(range(50, 200, 50))
@@ -297,7 +317,7 @@ for node in numberOfNodes:
         graph = create_random_graph(node, edges)
         for combination in twocombinations:
             node1, node2 = combination
-            if DFS2(graph, node1, node2):
+            if is_connected(graph, node1, node2):
                 temp += 1
 
         cycleHistory.append(temp/node)
