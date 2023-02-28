@@ -1,4 +1,5 @@
 from collections import deque
+from matplotlib import pyplot as plt
 
 #Undirected graph using an adjacency list
 class Graph:
@@ -168,3 +169,33 @@ def approx3(G):
         remove_all_incident_edges(G_copy, u)
         remove_all_incident_edges(G_copy, v)
     return C
+
+
+def approx_experiment():
+    mvc_sum = {}
+    approx1_sum = {}
+    approx2_sum = {}
+    approx3_sum = {}
+
+    for m in range(1, 31, 4):
+        random_graphs = [create_random_graph(8, m) for _ in range(1000)]
+
+        mvc_sum[m] = sum([len(MVC(graph)) for graph in random_graphs])
+        approx1_sum[m] = sum([len(approx1(graph)) for graph in random_graphs])
+        approx2_sum[m] = sum([len(approx2(graph)) for graph in random_graphs])
+        approx3_sum[m] = sum([len(approx3(graph)) for graph in random_graphs])
+
+    approx1_expected_preformance = {m: approx1_sum[m]/mvc_sum[m] for m in mvc_sum}
+    approx2_expected_preformance = {m: approx2_sum[m]/mvc_sum[m] for m in mvc_sum}
+    approx3_expected_preformance = {m: approx3_sum[m]/mvc_sum[m] for m in mvc_sum}
+
+    plt.plot(list(approx1_expected_preformance.keys()), list(approx1_expected_preformance.values()), label='Approximation 1')
+    plt.plot(list(approx2_expected_preformance.keys()), list(approx2_expected_preformance.values()), label='Approximation 2')
+    plt.plot(list(approx3_expected_preformance.keys()), list(approx3_expected_preformance.values()), label='Approximation 3')
+    plt.legend()
+    plt.xlabel('Number of edges')
+    plt.ylabel('Expected performance')
+    plt.title('Expected Preformance of Approximations vs Number of Edges')
+    plt.show()
+
+approx_experiment()
