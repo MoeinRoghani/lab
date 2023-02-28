@@ -1,4 +1,5 @@
 from collections import deque
+from matplotlib import pyplot as plt
 
 #Undirected graph using an adjacency list
 class Graph:
@@ -24,6 +25,16 @@ class Graph:
 
     def number_of_nodes():
         return len()
+
+    def get_size(self):
+        return len(self.adj)
+
+    def copy(self):
+        copy = Graph(self.get_size())
+        for node in self.adj:
+            for edge in self.adj[node]:
+                copy.add_edge(node, edge)
+        return copy
 
 
 #Breadth First Search
@@ -97,10 +108,10 @@ from itertools import combinations
 
 # A functtion to randomly generate a graph with i node and j edges
 def create_random_graph(i, j):
-
     # number of edges should always be smaller or equal to number of nodes
-    if j > (i*(i-1)/2):
-        raise Exception('The number of edges should always be smaller or equal to the a full graph with that number of nodes')
+    if j > (i * (i - 1) / 2):
+        raise Exception(
+            'The number of edges should always be smaller or equal to the a full graph with that number of nodes')
 
     # making an empty dictionary for our graph
     graph = Graph(i)
@@ -115,6 +126,111 @@ def create_random_graph(i, j):
     for edge in edges:
         node1, node2 = edge
         graph.add_edge(node1, node2)
-    
+
     return graph
 
+
+def remove_all_incident_edges(G, node):
+    for edge in G.adj[node]:
+        G.adj[edge].remove(node)
+    G.adj[node] = []
+
+
+def highest_degree_nodes(G):
+    keys = list(G.adj.keys())
+    if not keys:
+        return
+
+    maximum = keys[0]
+    for node in keys:
+        if len(G.adj[node]) > len(G.adj[maximum]):
+            maximum = node
+    return maximum
+
+
+def has_no_edges(G):
+    for node in G.adj:
+        if G.adj[node]:
+            return False
+    return True
+
+
+def approx1(G):
+    C = []
+
+    if has_no_edges(G):
+        return C
+
+    G2 = G.copy()
+    while not is_vertex_cover(G, C):
+        node = highest_degree_nodes(G2)
+        C.append(node)
+        remove_all_incident_edges(G2, node)
+    return C
+
+
+def approx2(G):
+    G_copy = G.copy()
+    C = set()
+
+    if has_no_edges(G):
+        return C
+
+    while not is_vertex_cover(G_copy, C):
+        vertex_list = list(G_copy.adj.keys())
+        vertex = random.choice([x for x in vertex_list if x not in C])
+        C.add(vertex)
+    return C
+        
+        
+def approx3(G):
+    G_copy = G.copy()
+    C = set()
+
+    if has_no_edges(G):
+        return C
+
+    while not is_vertex_cover(G_copy, C):
+        node1 = random.choice(list(G_copy.adj.keys()))
+        if len(G_copy.adjacent_nodes(node1)) == 0:
+            continue
+        node2 = random.choice(G_copy.adjacent_nodes(node1))
+        (u, v) = (node1, node2)
+
+        C.add(u)
+        C.add(v)
+
+        remove_all_incident_edges(G_copy, u)
+        remove_all_incident_edges(G_copy, v)
+
+    return C
+
+
+def approx_experiment():
+    mvc_sum = {}
+    approx1_sum = {}
+    approx2_sum = {}
+    approx3_sum = {}
+
+    for m in range(1, 28, 5):
+        random_graphs = [create_random_graph(8, m) for _ in range(1000)]
+
+        mvc_sum[m] = sum([len(MVC(graph)) for graph in random_graphs])
+        approx1_sum[m] = sum([len(approx1(graph)) for graph in random_graphs])
+        approx2_sum[m] = sum([len(approx2(graph)) for graph in random_graphs])
+        approx3_sum[m] = sum([len(approx3(graph)) for graph in random_graphs])
+
+    approx1_expected_preformance = {m: approx1_sum[m]/mvc_sum[m] for m in mvc_sum}
+    approx2_expected_preformance = {m: approx2_sum[m]/mvc_sum[m] for m in mvc_sum}
+    approx3_expected_preformance = {m: approx3_sum[m]/mvc_sum[m] for m in mvc_sum}
+
+    plt.plot(list(approx1_expected_preformance.keys()), list(approx1_expected_preformance.values()), label='Approximation 1')
+    plt.plot(list(approx2_expected_preformance.keys()), list(approx2_expected_preformance.values()), label='Approximation 2')
+    plt.plot(list(approx3_expected_preformance.keys()), list(approx3_expected_preformance.values()), label='Approximation 3')
+    plt.legend()
+    plt.xlabel('Number of edges')
+    plt.ylabel('Expected performance')
+    plt.title('Expected Preformance of Approximations vs Number of Edges')
+    plt.show()
+
+approx_experiment()
