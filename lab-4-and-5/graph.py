@@ -184,16 +184,14 @@ def MVC(G):
     return min_cover
 
 
-#-------------------------------------------------------------Experiment 1-------------------------------------------------------------
-import random
-from itertools import combinations
 
+#---------------------------------------------------------------Part 1---------------------------------------------------------------
 # A functtion to randomly generate a graph with i node and j edges
 def create_random_graph(i, j):
+
     # number of edges should always be smaller or equal to number of nodes
-    if j > (i * (i - 1) / 2):
-        raise Exception(
-            'The number of edges should always be smaller or equal to the a full graph with that number of nodes')
+    if j > (i*(i-1)/2):
+        raise Exception('The number of edges should always be smaller or equal to the a full graph with that number of nodes')
 
     # making an empty dictionary for our graph
     graph = Graph(i)
@@ -208,8 +206,124 @@ def create_random_graph(i, j):
     for edge in edges:
         node1, node2 = edge
         graph.add_edge(node1, node2)
-
+    
     return graph
+
+def has_cycle(g):
+    out = g.adj
+    for node in range(g.number_of_nodes()):
+        out[node] = (g.adjacent_nodes(node)) 
+
+    marked, stack = [], []
+    for node in out:
+        if node not in marked:
+            stack.append((node, None))
+
+            while stack:
+                current, parent = stack.pop()
+
+                if current in marked:
+                    return True
+                
+                marked.append(current)
+
+                for adjacent in out[current]:
+                    if adjacent != parent: 
+                        stack.append((adjacent, current))
+    return False
+
+
+#---------------------------------------------------------------Experiment 1---------------------------------------------------------------
+numberOfNodes = list(range(50, 200, 50))
+portionOfEdges = list(range(10, 105, 5))
+ 
+cycles = []
+
+for node in numberOfNodes:
+    numberOfSamples = 30
+    cycleHistory = []
+
+    #maxEdges = node*(node-1)/2
+    maxEdges = node
+
+    numberOfEdges = list(int(maxEdges * p /100) for p in portionOfEdges)
+    #portion
+    for edges in numberOfEdges:
+        temp = 0
+        for i in range(numberOfSamples):
+            if has_cycle(create_random_graph(node, edges)):
+                temp += 1
+        cycleHistory.append(temp/numberOfSamples)
+
+    cycles.append(cycleHistory)
+
+x0 = portionOfEdges
+y0 = cycles[0]
+plt.scatter(x0, y0)
+plt.plot(x0, y0, color='r', label='50 Nodes')
+
+x1 = portionOfEdges
+y1 = cycles[1]
+plt.scatter(x1, y1)
+plt.plot(x1, y1, color='b', label='100 Nodes')
+
+x2 = portionOfEdges
+y2 = cycles[2]
+plt.scatter(x2, y2)
+plt.plot(x2, y2, color='g', label='150 Nodes')
+
+plt.ylabel('Likelihood of our graph having a cycle', color='#1C2833')
+plt.xlabel('Proportion of edges to number of nodes in percentage', color='#1C2833')
+plt.legend()
+plt.grid()
+plt.show()
+
+
+#---------------------------------------------------------------Experiment 2---------------------------------------------------------------
+numberOfNodes = list(range(50, 200, 50))
+portionOfEdges = list(range(10, 105, 2))
+ 
+pathportion = []
+
+for node in numberOfNodes:
+    cycleHistory = []
+    twocombinations = list(combinations(range(node), 2))
+    maxEdges = node
+
+    numberOfEdges = list(int(maxEdges * p /100) for p in portionOfEdges)
+    #portion
+    for edges in numberOfEdges:
+        temp = 0
+        graph = create_random_graph(node, edges)
+        for combination in twocombinations:
+            node1, node2 = combination
+            if DFS2(graph, node1, node2):
+                temp += 1
+
+        cycleHistory.append(temp/node)
+
+    pathportion.append(cycleHistory)
+
+x0 = portionOfEdges
+y0 = pathportion[0]
+plt.scatter(x0, y0)
+plt.plot(x0, y0, color='r', label='50 Nodes')
+
+x1 = portionOfEdges
+y1 = pathportion[1]
+plt.scatter(x1, y1)
+plt.plot(x1, y1, color='b', label='100 Nodes')
+
+x2 = portionOfEdges
+y2 = pathportion[2]
+plt.scatter(x2, y2)
+plt.plot(x2, y2, color='g', label='150 Nodes')
+
+plt.ylabel('Portion of the connections to number of nodes', color='#1C2833')
+plt.xlabel('Proportion of edges to number of nodes in percentage', color='#1C2833')
+plt.legend()
+plt.grid()
+plt.show()
 
 # -------------------------------------------------------------Approximations-------------------------------------------------------------
 
