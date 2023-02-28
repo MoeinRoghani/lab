@@ -120,7 +120,7 @@ def create_random_graph(i, j):
     return out
 
 
-def remove_all_incedent_edges(G, node):
+def remove_all_incident_edges(G, node):
     for edge in G.adj[node]:
         G.adj[edge].remove(node)
     G.adj[node] = []
@@ -136,3 +136,13 @@ def highest_degree_nodes(G):
         if len(G.adj[node]) > len(G.adj[maximum]):
             maximum = node
     return maximum
+
+
+def approx1(G):
+    C = []
+    G2 = G.copy()
+    while not is_vertex_cover(G, C):
+        node = highest_degree_nodes(G2)
+        C.append(node)
+        remove_all_incident_edges(G2, node)
+    return C
