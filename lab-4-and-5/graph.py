@@ -211,6 +211,7 @@ def create_random_graph(i, j):
 
     return graph
 
+# -------------------------------------------------------------Approximations-------------------------------------------------------------
 
 def remove_all_incident_edges(G, node):
     for edge in G.adj[node]:
@@ -316,3 +317,22 @@ def approx_experiment():
     plt.show()
 
 approx_experiment()
+
+# -------------------------------------------------------------Independent Set Problem-------------------------------------------------------------
+
+def is_independent_set(G,set):
+    for node in range(len(set)-1):
+        for node2 in range(len(set)):
+            if G.are_connected(set[node], set[node2]):
+                return False
+    return True
+
+def MIS(G):
+    nodes = [i for i in range(G.get_size())]
+    subsets = power_set(nodes)
+    max_is = []
+    for subset in subsets:
+        if is_independent_set(G, subset):
+            if len(subset) > len(max_is):
+                max_is = subset
+    return max_is
