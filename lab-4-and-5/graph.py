@@ -97,13 +97,13 @@ from itertools import combinations
 
 # A functtion to randomly generate a graph with i node and j edges
 def create_random_graph(i, j):
-
     # number of edges should always be smaller or equal to number of nodes
-    if j > (i*(i-1)/2):
-        raise Exception('The number of edges should always be smaller or equal to the a full graph with that number of nodes')
+    if j > (i * (i - 1) / 2):
+        raise Exception(
+            'The number of edges should always be smaller or equal to the a full graph with that number of nodes')
 
     # making an empty dictionary for our graph
-    out = {node: [] for node in range(i)}
+    graph = Graph(i)
 
     # Create a list of all possible edges between nodes
     edge_samples = list(combinations(range(i), 2))
@@ -113,11 +113,10 @@ def create_random_graph(i, j):
 
     # make our graph by adding the values
     for edge in edges:
-        if edge[1] not in out[edge[0]]:
-            out[edge[0]].append(edge[1])
-            out[edge[1]].append(edge[0])
-    
-    return out
+        node1, node2 = edge
+        graph.add_edge(node1, node2)
+
+    return graph
 
 
 def remove_all_incident_edges(G, node):
