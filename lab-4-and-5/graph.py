@@ -71,6 +71,88 @@ def DFS(G, node1, node2):
                 S.append(node)
     return False
 
+# Breadth First Search Path
+def BFS2(G, node1, node2):
+
+    #FIFO QUEUE
+    Q = deque([[node1]])
+
+    #Marking Dictionary
+    marked = {node1 : True}
+    for node in G.adj: #Marks all of the nodes (populates marked dict)
+        if node != node1:
+            marked[node] = False
+
+    #Main Code
+    while len(Q) != 0:
+        temp_path = Q.popleft()
+        current_node = temp_path[len(temp_path)-1]
+        if current_node == node2:
+            return (temp_path)
+        for node in G.adj[current_node]:
+            if not marked[node]:
+                new_path = temp_path + [node]
+                Q.append(new_path)
+                marked[node] = True
+    return []
+
+# Depth First Search Path
+def DFS2(G, node1, node2):
+    S = [[node1]]
+
+    marked = {}
+    for node in G.adj:
+        marked[node] = False
+
+    while len(S) != 0:
+        temp_path = S.pop()
+        current_node = temp_path[len(temp_path)-1]
+        if not marked[current_node]:
+            marked[current_node] = True
+
+            for node in G.adj[current_node]:
+                new_path = temp_path + [node]
+                if node == node2:
+                    return new_path
+                S.append(new_path)
+    return []
+
+def DFS3(G,node1):
+    S = [node1]
+    pred = {}
+    marked = {}
+    for node in G.adj:
+        marked[node] = False
+
+    while len(S) != 0:
+        current_node = S.pop()
+        if not marked[current_node]:
+            marked[current_node] = True
+
+            for node in G.adj[current_node]:
+                if not marked[node]:
+                    pred[node] = current_node
+                S.append(node)
+    return pred
+
+def BFS3(G,node1):
+    pred = {}
+    Q = deque([node1])
+
+    marked = {node1: True}
+    for node in G.adj:
+        if node != node1:
+            marked[node] = False
+
+    while len(Q) != 0:
+        current_node = Q.popleft()
+        for node in G.adj[current_node]:
+            if not marked[node]:
+                pred[node] = current_node
+                Q.append(node)
+                marked[node] = True
+    return pred
+
 #Use the methods below to determine minimum vertex covers
 
 def add_to_each(sets, element):
