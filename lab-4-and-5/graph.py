@@ -29,6 +29,13 @@ class Graph:
     def get_size(self):
         return len(self.adj)
 
+    def copy(self):
+        copy = Graph(self.get_size())
+        for node in self.adj:
+            for edge in self.adj[node]:
+                copy.add_edge(node, edge)
+        return copy
+
 
 #Breadth First Search
 def BFS(G, node1, node2):
