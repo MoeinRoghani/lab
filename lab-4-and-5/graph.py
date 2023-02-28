@@ -26,6 +26,9 @@ class Graph:
     def number_of_nodes():
         return len()
 
+    def get_size(self):
+        return len(self.adj)
+
 
 #Breadth First Search
 def BFS(G, node1, node2):
