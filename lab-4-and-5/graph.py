@@ -118,3 +118,15 @@ def create_random_graph(i, j):
             out[edge[1]].append(edge[0])
     
     return out
+
+
+def highest_degree_nodes(G):
+    keys = list(G2.adj.keys())
+    if not keys:
+        return
+
+    maximum = keys[0]
+    for node in keys:
+        if len(G.adj[node]) > len(G.adj[maximum]):
+            maximum = node
+    return maximum
