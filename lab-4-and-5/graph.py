@@ -120,6 +120,12 @@ def create_random_graph(i, j):
     return out
 
 
+def remove_all_incedent_edges(G, node):
+    for edge in G.adj[node]:
+        G.adj[edge].remove(node)
+    G.adj[node] = []
+
+
 def highest_degree_nodes(G):
     keys = list(G2.adj.keys())
     if not keys:
