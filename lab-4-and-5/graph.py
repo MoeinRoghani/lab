@@ -173,10 +173,17 @@ def approx3(G):
     C = set()
     while not is_vertex_cover(G_copy, C):
         node1 = random.choice(list(G_copy.adj.keys()))
-        node2 = random.choice(G_copy.adj[node1])
+        if len(G_copy.adjacent_nodes(node1)) == 0:
+            continue
+        node2 = random.choice(G_copy.adjacent_nodes(node1))
         (u, v) = (node1, node2)
+
+        C.add(u)
+        C.add(v)
+
         remove_all_incident_edges(G_copy, u)
         remove_all_incident_edges(G_copy, v)
+
     return C
 
 
@@ -186,7 +193,7 @@ def approx_experiment():
     approx2_sum = {}
     approx3_sum = {}
 
-    for m in range(1, 31, 4):
+    for m in range(1, 28, 5):
         random_graphs = [create_random_graph(8, m) for _ in range(1000)]
 
         mvc_sum[m] = sum([len(MVC(graph)) for graph in random_graphs])
