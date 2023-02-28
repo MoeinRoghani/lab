@@ -148,8 +148,19 @@ def highest_degree_nodes(G):
     return maximum
 
 
+def has_no_edges(G):
+    for node in G.adj:
+        if G.adj[node]:
+            return False
+    return True
+
+
 def approx1(G):
     C = []
+
+    if has_no_edges(G):
+        return C
+
     G2 = G.copy()
     while not is_vertex_cover(G, C):
         node = highest_degree_nodes(G2)
@@ -161,6 +172,10 @@ def approx1(G):
 def approx2(G):
     G_copy = G.copy()
     C = set()
+
+    if has_no_edges(G):
+        return C
+
     while not is_vertex_cover(G_copy, C):
         edge_list = list(G_copy.adj.keys())
         edge = random.choice([x for x in edge_list if x not in C])
@@ -171,6 +186,10 @@ def approx2(G):
 def approx3(G):
     G_copy = G.copy()
     C = set()
+
+    if has_no_edges(G):
+        return C
+
     while not is_vertex_cover(G_copy, C):
         node1 = random.choice(list(G_copy.adj.keys()))
         if len(G_copy.adjacent_nodes(node1)) == 0:
