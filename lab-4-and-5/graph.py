@@ -120,7 +120,7 @@ def create_random_graph(i, j):
     return out
 
 
-def remove_all_incedent_edges(G, node):
+def remove_all_incident_edges(G, node):
     for edge in G.adj[node]:
         G.adj[edge].remove(node)
     G.adj[node] = []
@@ -133,6 +133,6 @@ def approx3(G):
         node1 = random.choice(list(G_copy.adj.keys()))
         node2 = random.choice(G_copy.adj[node1])
         (u, v) = (node1, node2)
-        remove_all_incedent_edges(G_copy, u)
-        remove_all_incedent_edges(G_copy, v)
+        remove_all_incident_edges(G_copy, u)
+        remove_all_incident_edges(G_copy, v)
     return C
