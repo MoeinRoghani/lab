@@ -127,7 +127,7 @@ def remove_all_incident_edges(G, node):
 
 
 def highest_degree_nodes(G):
-    keys = list(G2.adj.keys())
+    keys = list(G.adj.keys())
     if not keys:
         return
 
