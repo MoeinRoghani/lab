@@ -131,3 +131,4 @@ def approx2(G):
         edge_list = list(G_copy.adj.keys())
         edge = random.choice([x for x in edge_list if x not in C])
         C.add(edge)
+    return C
