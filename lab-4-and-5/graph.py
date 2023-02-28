@@ -126,6 +126,38 @@ def remove_all_incident_edges(G, node):
     G.adj[node] = []
 
 
+def highest_degree_nodes(G):
+    keys = list(G2.adj.keys())
+    if not keys:
+        return
+
+    maximum = keys[0]
+    for node in keys:
+        if len(G.adj[node]) > len(G.adj[maximum]):
+            maximum = node
+    return maximum
+
+
+def approx1(G):
+    C = []
+    G2 = G.copy()
+    while not is_vertex_cover(G, C):
+        node = highest_degree_nodes(G2)
+        C.append(node)
+        remove_all_incident_edges(G2, node)
+    return C
+
+
+def approx2(G):
+    G_copy = G.copy()
+    C = set()
+    while not is_vertex_cover(G_copy, C):
+        edge_list = list(G_copy.adj.keys())
+        edge = random.choice([x for x in edge_list if x not in C])
+        C.add(edge)
+    return C
+        
+        
 def approx3(G):
     G_copy = G.copy()
     C = set()
