@@ -177,9 +177,9 @@ def approx2(G):
         return C
 
     while not is_vertex_cover(G_copy, C):
-        edge_list = list(G_copy.adj.keys())
-        edge = random.choice([x for x in edge_list if x not in C])
-        C.add(edge)
+        vertex_list = list(G_copy.adj.keys())
+        vertex = random.choice([x for x in vertex_list if x not in C])
+        C.add(vertex)
     return C
         
         
