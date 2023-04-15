@@ -1,3 +1,5 @@
+from min_heap import MinHeap
+from element import Element
 
 # We are using MinHeap class in min_heap.py
 
