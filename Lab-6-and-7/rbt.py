@@ -51,7 +51,6 @@ class RBNode:
          return "(" + str(self.value) + "," + self.colour + ")"
 
     def rotate_right(self):
-<<<<<<< HEAD
         new_root = self.left
         self.left = new_root.right
 
@@ -93,13 +92,6 @@ class RBNode:
         new_root.left = self
         # update the parent pointer of the old root to point to the new
         self.parent = new_root
-=======
-        #TODO
-
-    def rotate_left(self):
-        #TODO
-
->>>>>>> 7f6ff939fd1129cb6bc84b1a1cc5cf33066179d7
 
 
 class RBTree:
@@ -143,7 +135,6 @@ class RBTree:
             else:
                 self.__insert(node.right, value)
 
-<<<<<<< HEAD
 def fix(self, node):
     # If node's parent is None, it means the node is the root and must be black.
     if node.parent == None:
@@ -202,17 +193,6 @@ def fix(self, node):
     self.root.make_black()
 
 
-=======
-    def fix(self, node):
-        #You may alter code in this method if you wish, it's merely a guide.
-        if node.parent == None:
-            node.make_black()
-        while node != None and node.parent != None and node.parent.is_red(): 
-            #TODO
-        self.root.make_black()
-                    
-        
->>>>>>> 7f6ff939fd1129cb6bc84b1a1cc5cf33066179d7
     def __str__(self):
         if self.is_empty():
             return "[]"
