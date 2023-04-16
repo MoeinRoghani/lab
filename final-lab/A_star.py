@@ -1,8 +1,6 @@
 from min_heap import MinHeap
-from element import Element
 
 # We are using MinHeap class in min_heap.py
-
 def a_star(G, s, d, h):
     def reconstruct_path(predecessors, current_node):
         path = [current_node]
@@ -38,3 +36,13 @@ def a_star(G, s, d, h):
                 predecessors[neighbor] = current
 
     return (predecessors, None)
+
+
+# we use this to represent each element in min heap and read values from it
+class Element:
+    def __init__(self, value, key):
+        self.value = value
+        self.key = key
+
+    def __str__(self):
+        return "(" + str(self.value) + "," + str(self.key) + ")"
