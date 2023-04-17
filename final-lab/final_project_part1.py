@@ -114,3 +114,5 @@ def init_d(G):
                 d[i][j] = G.w(i, j)
         d[i][i] = 0
     return d
+
+

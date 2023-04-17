@@ -9,10 +9,12 @@ def a_star(G, s, d, h):
             path.append(current_node)
         return path[::-1]
 
+    nodes = list(G.adj.keys())
+
     open_set = MinHeap([Element(s, h[s])])
     closed_set = set()
     predecessors = {}
-    g_score = {node: float('inf') for node in G}  # inf - floating point value representing positive infinity 
+    g_score = {node: float('inf') for node in nodes}  # inf - floating point value representing positive infinity
     g_score[s] = 0
 
     while not open_set.is_empty():
@@ -21,7 +23,8 @@ def a_star(G, s, d, h):
             return (predecessors, reconstruct_path(predecessors, current))
 
         closed_set.add(current)
-        for neighbor, weight in G[current].items():
+        for neighbor in G.adjacent_nodes(current):
+            weight = G.w(current, neighbor)
             if neighbor in closed_set:
                 continue
 
